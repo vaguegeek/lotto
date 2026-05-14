@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="margin-bottom: 24px;">📋 추첨 결과 목록</h2>
+{% for draw in draws %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <span style="font-weight: bold; font-size: 18px;">제 {{ draw.round_number }}회차</span>
+            <span style="color: #666; margin-left: 12px;">{{ draw.draw_date }}</span>
+        </div>
+        {% if draw.is_drawn %}
+        <a href="/draws/{{ draw.round_number }}/" class="btn btn-primary">결과 보기</a>
+        {% else %}
+        <span style="color: #1a237e; font-weight: bold;">추첨 예정</span>
+        {% endif %}
+    </div>
+    {% if draw.is_drawn and draw.result %}
+    <div style="margin-top: 12px;">
+        {% for num in draw.result.get_winning_numbers %}
+            {% if num <= 10 %}
+                <span class="ball ball-yellow">{{ num }}</span>
+            {% elif num <= 20 %}
+                <span class="ball ball-blue">{{ num }}</span>
+            {% elif num <= 30 %}
+                <span class="ball ball-red">{{ num }}</span>
+            {% else %}
+                <span class="ball ball-gray">{{ num }}</span>
+            {% endif %}
+        {% endfor %}
+        <span style="margin: 0 8px;">+</span>
+        <span class="ball ball-red">{{ draw.result.bonus }}</span>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

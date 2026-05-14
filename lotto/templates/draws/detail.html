@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2 style="margin-bottom: 24px;">🏆 제 {{ draw.round_number }}회차 추첨 결과</h2>
+    <p style="color: #666; margin-bottom: 24px;">추첨일: {{ draw.draw_date }}</p>
+
+    {% if result %}
+    <div style="text-align: center; padding: 30px; background: #fff8e1; border-radius: 12px;">
+        <h3 style="margin-bottom: 20px;">당첨 번호</h3>
+        <div>
+            {% for num in result.get_winning_numbers %}
+                {% if num <= 10 %}
+                    <span class="ball ball-yellow" style="width: 50px; height: 50px; font-size: 18px;">{{ num }}</span>
+                {% elif num <= 20 %}
+                    <span class="ball ball-blue" style="width: 50px; height: 50px; font-size: 18px;">{{ num }}</span>
+                {% elif num <= 30 %}
+                    <span class="ball ball-red" style="width: 50px; height: 50px; font-size: 18px;">{{ num }}</span>
+                {% else %}
+                    <span class="ball ball-gray" style="width: 50px; height: 50px; font-size: 18px;">{{ num }}</span>
+                {% endif %}
+            {% endfor %}
+            <span style="margin: 0 12px; font-size: 24px; font-weight: bold;">+</span>
+            <span class="ball ball-red" style="width: 50px; height: 50px; font-size: 18px;">{{ result.bonus }}</span>
+        </div>
+        <p style="margin-top: 16px; color: #666;">보너스 번호: {{ result.bonus }}</p>
+    </div>
+    {% else %}
+    <p style="color: #666;">아직 추첨이 진행되지 않았어요.</p>
+    {% if user.is_staff %}
+    <form method="post" action="/draws/admin/draw/{{ draw.round_number }}/">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="margin-top: 20px;">
+            🎰 추첨 진행하기
+        </button>
+    </form>
+    {% endif %}
+    {% endif %}
+</div>
+<a href="/draws/" class="btn" style="background: #eee;">← 목록으로</a>
+{% endblock %}

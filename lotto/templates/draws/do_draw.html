@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="text-align: center;">
+    <h2>🎰 제 {{ draw.round_number }}회차 추첨</h2>
+    <p style="color: #666; margin: 20px 0;">추첨을 진행하면 되돌릴 수 없어요!</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="font-size: 18px; padding: 14px 40px;">
+            추첨 시작!
+        </button>
+    </form>
+</div>
+{% endblock %}
